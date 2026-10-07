@@ -1,17 +1,45 @@
 package com.aditya.shopliteapp
 
+import com.aditya.shopliteapp.domain.model.CartItem
+import com.aditya.shopliteapp.domain.model.Product
+import com.aditya.shopliteapp.domain.model.brandOrDefault
+import com.aditya.shopliteapp.domain.model.discountedPrice
+import com.aditya.shopliteapp.domain.model.toPrice
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-import org.junit.Assert.*
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class ExampleUnitTest {
+
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+    }
+
+    @Test
+    fun day2_models() {
+        val product = Product(
+            id = 1,
+            title = "iPhone",
+            description = "Apple iPhone",
+            category = "smartphones",
+            price = 100.0,
+            discountPercentage = 20.0,
+            rating = 4.5,
+            stock = 10,
+            brand = null,
+            thumbnail = "iphone.jpg",
+            images = listOf("iphone1.jpg")
+        )
+
+        val cartItem = CartItem(
+            product = product,
+            quantity = 3
+        )
+
+        println(product.discountedPrice().toPrice()) // $80.00
+        println(product.brandOrDefault())            // Unknown brand
+        println(cartItem.totalPrice)                 // 240.0
+        println(product == product.copy())           // true
+        println(product === product.copy())          // false
     }
 }
