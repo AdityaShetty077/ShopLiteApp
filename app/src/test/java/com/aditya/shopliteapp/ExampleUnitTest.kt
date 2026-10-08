@@ -1,9 +1,14 @@
 package com.aditya.shopliteapp
 
+import com.aditya.shopliteapp.data.dummy.FakeProductSource
 import com.aditya.shopliteapp.domain.model.CartItem
 import com.aditya.shopliteapp.domain.model.Product
+import com.aditya.shopliteapp.domain.model.SortOrder
 import com.aditya.shopliteapp.domain.model.brandOrDefault
 import com.aditya.shopliteapp.domain.model.discountedPrice
+import com.aditya.shopliteapp.domain.model.filterByCategory
+import com.aditya.shopliteapp.domain.model.searchByTitle
+import com.aditya.shopliteapp.domain.model.sortBy
 import com.aditya.shopliteapp.domain.model.toPrice
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -41,5 +46,26 @@ class ExampleUnitTest {
         println(cartItem.totalPrice)                 // 240.0
         println(product == product.copy())           // true
         println(product === product.copy())          // false
+    }
+
+    @Test
+
+    fun testProductExtensions() {
+
+        println(
+            FakeProductSource.products
+                .filterByCategory("laptops")
+        )
+
+        println(
+            FakeProductSource.products
+                .searchByTitle("IPHONE")
+        )
+
+        println(
+            FakeProductSource.products
+                .sortBy(SortOrder.PRICE_LOW_TO_HIGH)
+                .map { it.title }
+        )
     }
 }
