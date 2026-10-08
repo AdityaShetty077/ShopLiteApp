@@ -1,6 +1,6 @@
 package com.aditya.shopliteapp
 
-import com.aditya.shopliteapp.data.dummy.FakeProductSource
+import com.aditya.shopliteapp.data.fake.FakeProductSource
 import com.aditya.shopliteapp.domain.model.CartItem
 import com.aditya.shopliteapp.domain.model.Product
 import com.aditya.shopliteapp.domain.model.SortOrder
