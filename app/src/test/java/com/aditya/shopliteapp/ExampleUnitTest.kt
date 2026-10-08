@@ -1,5 +1,6 @@
 package com.aditya.shopliteapp
 
+import com.aditya.shopliteapp.data.fake.FakeProductRepository
 import com.aditya.shopliteapp.data.fake.FakeProductSource
 import com.aditya.shopliteapp.domain.model.CartItem
 import com.aditya.shopliteapp.domain.model.Product
@@ -11,6 +12,7 @@ import com.aditya.shopliteapp.domain.model.searchByTitle
 import com.aditya.shopliteapp.domain.model.sortBy
 import com.aditya.shopliteapp.domain.model.toPrice
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 class ExampleUnitTest {
@@ -67,5 +69,18 @@ class ExampleUnitTest {
                 .sortBy(SortOrder.PRICE_LOW_TO_HIGH)
                 .map { it.title }
         )
+    }
+
+    @Test
+    fun day5_repository() = runBlocking {
+        val repository = FakeProductRepository()
+
+        println(repository.getProducts())
+
+        println(repository.getProduct(78))
+
+        println(repository.getProduct(999))
+
+        println(repository.getCategories())
     }
 }
