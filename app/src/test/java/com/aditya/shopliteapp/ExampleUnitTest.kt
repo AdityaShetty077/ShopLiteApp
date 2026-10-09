@@ -1,5 +1,6 @@
 package com.aditya.shopliteapp
 
+import com.aditya.shopliteapp.data.fake.FakeCartRepository
 import com.aditya.shopliteapp.data.fake.FakeProductRepository
 import com.aditya.shopliteapp.data.fake.FakeProductSource
 import com.aditya.shopliteapp.domain.model.CartItem
@@ -82,5 +83,24 @@ class ExampleUnitTest {
         println(repository.getProduct(999))
 
         println(repository.getCategories())
+    }
+
+    @Test
+    fun day6_cart() = runBlocking {
+        val repo = FakeCartRepository()
+        val iphone = FakeProductSource.products[0]
+        val macbook = FakeProductSource.products[2]
+
+        repo.add(iphone)
+        repo.add(iphone)
+        repo.add(macbook)
+        println("Hello ${repo.cart.value}")
+        repo.changeQuantity(macbook.id,7)
+        println(repo.cart.value)
+        println(repo.cart.value.sumOf { it.totalPrice })
+        repo.remove(iphone.id)
+        println(repo.cart.value)
+        repo.changeQuantity(macbook.id,0)
+        println(repo.cart.value)
     }
 }
