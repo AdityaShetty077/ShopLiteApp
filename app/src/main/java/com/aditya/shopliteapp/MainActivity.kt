@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                         products = FakeProductSource.products,
                         modifier = Modifier
                             .padding(innerPadding)
-                            .width(180.dp)
+
                     )
                 }
             }
