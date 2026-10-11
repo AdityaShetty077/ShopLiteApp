@@ -25,9 +25,9 @@ import com.aditya.shopliteapp.ui.theme.ShopLiteAppTheme
 
 @Composable
 fun ProductCard(product: Product, modifier: Modifier = Modifier) {
-    Card(modifier = modifier) {                                   // ①
-        Column {                                                  // ②
-            AsyncImage(                                           // ③
+    Card(modifier = modifier) {
+        Column {
+            AsyncImage(
                 model = product.thumbnail,
                 contentDescription = product.title,
                 contentScale = ContentScale.Crop,
@@ -35,14 +35,15 @@ fun ProductCard(product: Product, modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .height(140.dp)
             )
-            Column(modifier = Modifier.padding(8.dp)) {           // ④
-                Text(                                             // ⑤
+            Column(modifier = Modifier.padding(8.dp)) {
+                Text(
                     text = product.title,
                     style = MaterialTheme.typography.titleSmall,
+                    minLines = 2,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                Row(                                              // ⑥
+                Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -57,7 +58,7 @@ fun ProductCard(product: Product, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true, widthDp = 180)                    // ⑦
+@Preview(showBackground = true, widthDp = 180)
 @Composable
 fun ProductCardPreview() {
     ShopLiteAppTheme {
