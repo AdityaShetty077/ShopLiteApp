@@ -23,7 +23,6 @@ class MainActivity : ComponentActivity() {
             ShopLiteAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     HomeScreen(
-                        products = FakeProductSource.products,
                         modifier = Modifier
                             .padding(innerPadding)
 
