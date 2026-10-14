@@ -25,20 +25,6 @@ import com.aditya.shopliteapp.ui.components.ProductCard
 import com.aditya.shopliteapp.ui.theme.ShopLiteAppTheme
 
 @Composable
-fun ProductGrid(products: List<Product>, modifier: Modifier = Modifier) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = modifier,
-        contentPadding = PaddingValues(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(products, key = { it.id }) { product ->
-            ProductCard(product = product)
-        }
-    }
-}
-@Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel()
@@ -74,6 +60,21 @@ fun HomeContent(
             }
         }
         else -> ProductGrid(products = uiState.products, modifier = modifier)
+    }
+}
+
+@Composable
+fun ProductGrid(products: List<Product>, modifier: Modifier = Modifier) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        modifier = modifier,
+        contentPadding = PaddingValues(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(products, key = { it.id }) { product ->
+            ProductCard(product = product)
+        }
     }
 }
 
