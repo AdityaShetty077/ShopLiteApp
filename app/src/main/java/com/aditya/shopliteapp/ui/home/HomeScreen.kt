@@ -32,7 +32,7 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     HomeContent(
         uiState = uiState,
-        onRetry = viewModel::loadProducts,
+        onRetry = { viewModel.loadProducts() },
         modifier = modifier
     )
 }
