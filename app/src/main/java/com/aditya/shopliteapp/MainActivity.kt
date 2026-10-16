@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.aditya.shopliteapp.data.fake.FakeProductSource
 import com.aditya.shopliteapp.ui.components.ProductCard
+import com.aditya.shopliteapp.ui.home.HomeScreen
 import com.aditya.shopliteapp.ui.home.ProductGrid
 import com.aditya.shopliteapp.ui.theme.ShopLiteAppTheme
 
@@ -23,10 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ShopLiteAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ProductGrid(
-                        FakeProductSource.products,
-                        Modifier.padding(innerPadding)
-                    )
+                        HomeScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
