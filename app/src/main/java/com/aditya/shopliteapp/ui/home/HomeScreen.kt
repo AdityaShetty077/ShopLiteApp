@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -21,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aditya.shopliteapp.data.fake.FakeProductSource
 import com.aditya.shopliteapp.domain.model.Product
+import com.aditya.shopliteapp.domain.model.SortOrder
 import com.aditya.shopliteapp.ui.components.ProductCard
 import com.aditya.shopliteapp.ui.theme.ShopLiteAppTheme
 
@@ -33,6 +36,9 @@ fun HomeScreen(
     HomeContent(
         uiState = uiState,
         onRetry = { viewModel.loadProducts() },
+        onQueryChange = { viewModel.onQueryChange(it) },
+        onCategorySelected = { viewModel.onCategorySelected(it) },
+        onSortSelected = { viewModel.onSortSelected(it) },
         modifier = modifier
     )
 }
@@ -41,6 +47,9 @@ fun HomeScreen(
 fun HomeContent(
     uiState: HomeUiState,
     onRetry: () -> Unit,
+    onQueryChange: (String) -> Unit,
+    onCategorySelected: (String?) -> Unit,
+    onSortSelected: (SortOrder) -> Unit,
     modifier: Modifier = Modifier
 ) {
     when {
@@ -64,7 +73,36 @@ fun HomeContent(
                 }
             }
         }
-        else -> ProductGrid(products = uiState.products, modifier = modifier)
+        else -> Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = 8.dp)
+        ) {
+            ProductSearchField(
+                query = uiState.query,
+                onQueryChange = onQueryChange,
+                modifier = Modifier.fillMaxWidth()
+            )
+            CategoryChips(
+                categories = uiState.categories,
+                selected = uiState.selectedCategory,
+                onSelect = onCategorySelected,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            SortMenu(selected = uiState.sortOrder, onSelect = onSortSelected)
+
+            if (uiState.visibleProducts.isEmpty()) {
+                Text(
+                    text = "No products match your search",
+                    modifier = Modifier.padding(16.dp)
+                )
+            } else {
+                ProductGrid(
+                    products = uiState.visibleProducts,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
     }
 }
 
@@ -89,7 +127,13 @@ fun ProductGrid(products: List<Product>, modifier: Modifier = Modifier) {
 @Composable
 fun HomeErrorPreview() {
     ShopLiteAppTheme {
-        HomeContent(uiState = HomeUiState(errorMessage = "No internet connection"), onRetry = {})
+        HomeContent(
+            uiState = HomeUiState(errorMessage = "No internet connection"),
+            onRetry = {},
+            onQueryChange = {},
+            onCategorySelected = {},
+            onSortSelected = {}
+        )
     }
 }
 
@@ -97,13 +141,28 @@ fun HomeErrorPreview() {
 @Composable
 fun HomeSuccessPreview() {
     ShopLiteAppTheme {
-        HomeContent(uiState = HomeUiState(products = FakeProductSource.products), onRetry = {})
+        HomeContent(
+            uiState = HomeUiState(
+                products = FakeProductSource.products,
+                categories = FakeProductSource.categories
+            ),
+            onRetry = {},
+            onQueryChange = {},
+            onCategorySelected = {},
+            onSortSelected = {}
+        )
     }
 }
 @Preview(name = "Loading", showBackground = true)
 @Composable
 fun HomeLoadingPreview() {
     ShopLiteAppTheme {
-        HomeContent(uiState = HomeUiState(isLoading = true), onRetry = {})
+        HomeContent(
+            uiState = HomeUiState(isLoading = true),
+            onRetry = {},
+            onQueryChange = {},
+            onCategorySelected = {},
+            onSortSelected = {}
+        )
     }
 }
