@@ -1,5 +1,6 @@
 package com.aditya.shopliteapp.ui.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import com.aditya.shopliteapp.ui.theme.ShopLiteAppTheme
 
 @Composable
 fun HomeScreen(
+    onProductClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel()
 ) {
@@ -39,6 +41,7 @@ fun HomeScreen(
         onQueryChange = { viewModel.onQueryChange(it) },
         onCategorySelected = { viewModel.onCategorySelected(it) },
         onSortSelected = { viewModel.onSortSelected(it) },
+        onProductClick = onProductClick,
         modifier = modifier
     )
 }
@@ -50,6 +53,7 @@ fun HomeContent(
     onQueryChange: (String) -> Unit,
     onCategorySelected: (String?) -> Unit,
     onSortSelected: (SortOrder) -> Unit,
+    onProductClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     when {
@@ -99,6 +103,7 @@ fun HomeContent(
             } else {
                 ProductGrid(
                     products = uiState.visibleProducts,
+                    onProductClick = onProductClick,
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -107,7 +112,11 @@ fun HomeContent(
 }
 
 @Composable
-fun ProductGrid(products: List<Product>, modifier: Modifier = Modifier) {
+fun ProductGrid(
+    products: List<Product>,
+    onProductClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier,
@@ -115,11 +124,12 @@ fun ProductGrid(products: List<Product>, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(products, key = { it.id }, itemContent = {
-             product ->
-                ProductCard(product = product)
-
-        })
+        items(products, key = { it.id }) { product ->
+            ProductCard(
+                product = product,
+                modifier = Modifier.clickable { onProductClick(product.id) }
+            )
+        }
     }
 }
 
@@ -132,7 +142,8 @@ fun HomeErrorPreview() {
             onRetry = {},
             onQueryChange = {},
             onCategorySelected = {},
-            onSortSelected = {}
+            onSortSelected = {},
+            onProductClick = {}
         )
     }
 }
@@ -149,7 +160,8 @@ fun HomeSuccessPreview() {
             onRetry = {},
             onQueryChange = {},
             onCategorySelected = {},
-            onSortSelected = {}
+            onSortSelected = {},
+            onProductClick = {}
         )
     }
 }
@@ -162,7 +174,8 @@ fun HomeLoadingPreview() {
             onRetry = {},
             onQueryChange = {},
             onCategorySelected = {},
-            onSortSelected = {}
+            onSortSelected = {},
+            onProductClick = {}
         )
     }
 }
