@@ -36,6 +36,7 @@ import kotlin.math.roundToInt
 @Composable
 fun ProductDetailScreen(
     onBack: () -> Unit,
+    onAddedToCart: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailViewModel = viewModel()
 ) {
@@ -44,6 +45,10 @@ fun ProductDetailScreen(
         uiState = uiState,
         onBack = onBack,
         onRetry = { viewModel.loadProduct() },
+        onAddToCart = {
+            viewModel.addToCart()
+            onAddedToCart()
+        },
         modifier = modifier
     )
 }
@@ -53,6 +58,7 @@ fun ProductDetailContent(
     uiState: DetailUiState,
     onBack: () -> Unit,
     onRetry: () -> Unit,
+    onAddToCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     when {
@@ -73,7 +79,12 @@ fun ProductDetailContent(
             }
         }
         uiState.product != null -> {
-            ProductDetails(product = uiState.product, onBack = onBack, modifier = modifier)
+            ProductDetails(
+                product = uiState.product,
+                onBack = onBack,
+                onAddToCart = onAddToCart,
+                modifier = modifier
+            )
         }
     }
 }
@@ -82,6 +93,7 @@ fun ProductDetailContent(
 fun ProductDetails(
     product: Product,
     onBack: () -> Unit,
+    onAddToCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -130,7 +142,7 @@ fun ProductDetails(
         Text(text = product.description, style = MaterialTheme.typography.bodyLarge)
 
         Button(
-            onClick = { /* Day 13: add to cart */ },
+            onClick = onAddToCart,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Add to cart")
@@ -158,7 +170,8 @@ fun ProductDetailContentPreview() {
     MaterialTheme {
         ProductDetails(
             product = product,
-            onBack = {}
+            onBack = {},
+            onAddToCart = {}
         )
     }
 }

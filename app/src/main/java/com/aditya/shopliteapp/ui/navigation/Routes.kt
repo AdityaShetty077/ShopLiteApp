@@ -7,3 +7,9 @@ object HomeRoute
 
 @Serializable
 data class ProductDetailRoute(val productId: Int)
+
+@Serializable
+object CartRoute
+
+@Serializable
+object ProfileRoute

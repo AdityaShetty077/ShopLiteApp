@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.aditya.shopliteapp.data.fake.FakeProductRepository
+import com.aditya.shopliteapp.di.AppContainer
+import com.aditya.shopliteapp.domain.repository.CartRepository
 import com.aditya.shopliteapp.domain.repository.ProductRepository
 import com.aditya.shopliteapp.domain.result.DataResult
 import com.aditya.shopliteapp.domain.result.toMessage
@@ -16,7 +18,8 @@ import kotlinx.coroutines.launch
 
 class DetailViewModel @JvmOverloads constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: ProductRepository = FakeProductRepository()
+    private val repository: ProductRepository = FakeProductRepository(),
+    private val cartRepository: CartRepository = AppContainer.cartRepository
 ) : ViewModel(){
     private val productId = savedStateHandle.toRoute<ProductDetailRoute>().productId
     private val _uiState = MutableStateFlow(DetailUiState(isLoading = true))
@@ -35,5 +38,10 @@ class DetailViewModel @JvmOverloads constructor(
                 is DataResult.Error -> _uiState.value = DetailUiState(errorMessage = result.error.toMessage())
             }
         }
+    }
+
+    fun addToCart() {
+        val product = _uiState.value.product ?: return
+        viewModelScope.launch { cartRepository.add(product) }
     }
 }
