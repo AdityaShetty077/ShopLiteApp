@@ -1,5 +1,6 @@
 package com.aditya.shopliteapp.ui.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,14 +31,18 @@ import com.aditya.shopliteapp.ui.theme.ShopLiteAppTheme
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    onProductClick: (Int) -> Unit,
     viewModel: HomeViewModel = viewModel(),
 
-) {
+    ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    HomeContent(uiState = uiState, onRetry = { viewModel.loadProducts() }, modifier = modifier,
+    HomeContent(
+        uiState = uiState, onRetry = { viewModel.loadProducts() }, modifier = modifier,
         onQueryChange = { viewModel.onQueryChange(it) },
         onCategorySelected = { viewModel.onCategorySelected(it) },
-        onSortSelected = { viewModel.onSortSelected(it) })
+        onSortSelected = { viewModel.onSortSelected(it) },
+        onProductClick = onProductClick
+    )
 }
 
 @Composable
@@ -47,7 +52,8 @@ fun HomeContent(
     modifier: Modifier = Modifier,
     onQueryChange: (String) -> Unit,
     onCategorySelected: (String?) -> Unit,
-    onSortSelected: (SortOrder) -> Unit
+    onSortSelected: (SortOrder) -> Unit,
+    onProductClick: (Int) -> Unit
 ) {
     when {
         uiState.isLoading -> {
@@ -99,6 +105,7 @@ fun HomeContent(
                 } else {
                     ProductGrid(
                         products = uiState.visibleProducts,
+                        onProductClick = onProductClick,
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -109,7 +116,11 @@ fun HomeContent(
 
 
 @Composable
-fun ProductGrid(products: List<Product>, modifier: Modifier = Modifier) {
+fun ProductGrid(
+    products: List<Product>,
+    onProductClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier,
@@ -118,7 +129,9 @@ fun ProductGrid(products: List<Product>, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(products, key = { it.id }) { product ->
-            ProductCard(product = product)
+            ProductCard(
+                product = product,
+                modifier = Modifier.clickable { onProductClick(product.id) })
         }
     }
 }
@@ -128,9 +141,10 @@ fun ProductGrid(products: List<Product>, modifier: Modifier = Modifier) {
 @Composable
 fun HomeLoadingPreview() {
     ShopLiteAppTheme {
-        HomeContent(uiState = HomeUiState(isLoading = true), onRetry = {},onQueryChange = {},
+        HomeContent(
+            uiState = HomeUiState(isLoading = true), onRetry = {}, onQueryChange = {},
             onCategorySelected = {},
-            onSortSelected = {})
+            onSortSelected = {}, onProductClick = {})
     }
 }
 
@@ -138,9 +152,13 @@ fun HomeLoadingPreview() {
 @Composable
 fun HomeErrorPreview() {
     ShopLiteAppTheme {
-        HomeContent(uiState = HomeUiState(errorMessage = "No internet connection"), onRetry = {},onQueryChange = {},
+        HomeContent(
+            uiState = HomeUiState(errorMessage = "No internet connection"),
+            onRetry = {},
+            onQueryChange = {},
             onCategorySelected = {},
-            onSortSelected = {})
+            onSortSelected = {},
+            onProductClick = {})
     }
 }
 
@@ -148,8 +166,12 @@ fun HomeErrorPreview() {
 @Composable
 fun HomeSuccessPreview() {
     ShopLiteAppTheme {
-        HomeContent(uiState = HomeUiState(products = FakeProductSource.products), onRetry = {},onQueryChange = {},
+        HomeContent(
+            uiState = HomeUiState(products = FakeProductSource.products),
+            onRetry = {},
+            onQueryChange = {},
             onCategorySelected = {},
-            onSortSelected = {})
+            onSortSelected = {},
+            onProductClick = {})
     }
 }

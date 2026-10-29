@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.aditya.shopliteapp.ui.home.HomeScreen
+import com.aditya.shopliteapp.ui.navigation.AppNavHost
 import com.aditya.shopliteapp.ui.theme.ShopLiteAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +22,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             ShopLiteAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(modifier = Modifier.padding(innerPadding))
+                    AppNavHost(modifier = Modifier.padding(innerPadding))
+//                    HomeScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
