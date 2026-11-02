@@ -17,7 +17,7 @@ class RemoteProductRepository(
             val response = api.getProducts()                        // { products: [...] }
             DataResult.Success(response.products.map { it.toDomain() })
         } catch (e: Exception) {
-            DataResult.Error(AppError.Unknown(e.message))           // Day 16: split into Network / Http
+            DataResult.Error(e.toAppError())     // Day 16: split into Network / Http
         }
     }
 
@@ -25,7 +25,7 @@ class RemoteProductRepository(
         return try {
             DataResult.Success(api.getProduct(id).toDomain())
         } catch (e: Exception) {
-            DataResult.Error(AppError.Unknown(e.message))
+            DataResult.Error(e.toAppError())
         }
     }
 
@@ -33,7 +33,7 @@ class RemoteProductRepository(
         return try {
             DataResult.Success(api.getCategories().map { it.toDomain() })
         } catch (e: Exception) {
-            DataResult.Error(AppError.Unknown(e.message))
+            DataResult.Error(e.toAppError())
         }
     }
 }
