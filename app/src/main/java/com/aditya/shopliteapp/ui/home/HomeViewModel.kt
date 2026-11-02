@@ -3,6 +3,7 @@ package com.aditya.shopliteapp.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aditya.shopliteapp.data.fake.FakeProductRepository
+import com.aditya.shopliteapp.di.AppContainer
 import com.aditya.shopliteapp.domain.model.SortOrder
 import com.aditya.shopliteapp.domain.repository.ProductRepository
 import com.aditya.shopliteapp.domain.result.DataResult
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val repository: ProductRepository = FakeProductRepository()
+    private val repository: ProductRepository = AppContainer.productRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState(isLoading = true))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()

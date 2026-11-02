@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class DetailViewModel @JvmOverloads constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: ProductRepository = FakeProductRepository(),
+    private val repository: ProductRepository = AppContainer.productRepository,
     private val cartRepository: CartRepository = AppContainer.cartRepository
 ) : ViewModel() {
     private val productId = savedStateHandle.toRoute<ProductDetailRoute>().productId
