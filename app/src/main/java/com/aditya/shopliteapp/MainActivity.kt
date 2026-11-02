@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.aditya.shopliteapp.ui.ShopLiteApp
 import com.aditya.shopliteapp.ui.home.HomeScreen
 import com.aditya.shopliteapp.ui.navigation.AppNavHost
 import com.aditya.shopliteapp.ui.theme.ShopLiteAppTheme
@@ -21,10 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ShopLiteAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    AppNavHost(modifier = Modifier.padding(innerPadding))
-//                    HomeScreen(modifier = Modifier.padding(innerPadding))
-                }
+                ShopLiteApp()
             }
         }
     }
